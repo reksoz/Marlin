@@ -38,16 +38,18 @@ jobs:
       run: |
         ls -la .pio/build/mega2560/
     
-    - name: Create MARLIN directory if it doesn't exist
-      run: mkdir -p MARLIN
+    - name: Get current date
+      id: date
+      run: echo "date=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
     
-    - name: Copy firmware to MARLIN directory
-      run: cp .pio/build/mega2560/firmware.hex MARLIN/
-    
-    - name: Commit and push firmware
-      run: |
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'actions@github.com'
-        git add MARLIN/firmware.hex
-        git commit -m "Update compiled firmware" || echo "No changes to commit"
-        git push
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: firmware-${{ steps.date.outputs.date }}
+        name: Firmware Build ${{ steps.date.outputs.date }}
+        files: .pio/build/mega2560/firmware.hex
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
