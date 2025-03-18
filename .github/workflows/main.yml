@@ -2,25 +2,25 @@ name: Build Marlin for Geeetech A10
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Cache PlatformIO
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-pio
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: '3.10'
     - name: Install PlatformIO
       run: |
         python -m pip install --upgrade pip
@@ -29,7 +29,7 @@ jobs:
       run: |
         platformio run -e mega2560
     - name: Upload firmware
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: firmware
         path: .pio/build/mega2560/firmware.hex
