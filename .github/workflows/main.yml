@@ -29,7 +29,7 @@ jobs:
       run: |
         platformio run -e mega2560
     - name: Upload firmware
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: firmware
         path: .pio/build/mega2560/firmware.hex
