@@ -23,5 +23,5 @@ jobs:
     - name: Build firmware
       run: |
         platformio run -e mega2560
-        ls -la .pio/build/mega2560/
+        ls -la Marlin
         echo "Firmware compilado exitosamente"
